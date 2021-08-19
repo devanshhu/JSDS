@@ -15,7 +15,7 @@ class Stack {
         return this.arr.length;
     }
     peek() {
-        return this.arr[this.size()];
+        return this.arr[this.size() - 1];
     }
     print() {
         console.log("[ " + this.arr.join(", "), "]  <-- top");
