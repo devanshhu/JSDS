@@ -1,20 +1,33 @@
 // --------------------------------------PRIORITY QUEUE STARTS----------------------------
 class PriorityQueue {
 
-    constructor() {
+    /**
+     * @constructor
+     * Creates a new Priority queue. Does not accept seed list yet.
+     */
+    constructor(order = "max", callback = (x) => x) {
 
         this.items = [];
+        this.order = order;
+        this.key = callback;
     }
 
-    print() {
+    /**
+     * print the Queue based on a callback. Defaults to (x) => x.
+     * @param {Function } callback  
+     */
+    print(callback = (x) => x) {
 
-        console.log("Rear --> [ " + this.items.join(", ") + " ] <-- Front");
+        console.log("Front --> [ " + this.items.map(callback).join(", ") + " ] <-- Rear");
     }
 
+    /**
+     * Returns the element from 
+     * @returns { any }
+     */
     dequeue() {
 
         if (this.items.length === 0) {
-
             throw Error("Empty Queue !!")
         }
         const deleted = this.items[0];
@@ -22,44 +35,91 @@ class PriorityQueue {
         return deleted;
     }
 
+    /**
+     * Return the size of the Queue.
+     * @returns 
+     */
     size() {
 
         return this.items.length;
     }
+    /**
+     * Enqueues the objects 
+     * @param {any} val add object to the queue.
+     */
     enqueue(val) {
-        if (typeof val === 'object') {
 
-        } else {
-            let i = 0;
-            while (val > this.items[i])
+        let i = 0;
+        if (this.order === "max") {
+            while (this.items[i] && this.key(val) <= this.key(this.items[i])) {
                 i++;
-            this.items.splice(i, 0, val);
+            }
+        } else {
+            while (this.items[i] && this.key(val) >= this.key(this.items[i])) {
+                i++;
+            }
         }
+        this.items.splice(i, 0, val);
+
     }
-    getFront() {
+
+    /**
+     * Get the rear element of the queue.
+     * @returns { object }
+     */
+    getRear() {
 
         if (this.items.length === 0)
             throw Error("Empty Queue !!!");
         return this.items[this.size() - 1];
     }
 
-    getRear() {
+    /**
+     * Get the front element of the queue
+     * @returns { object }
+     */
+    getFront() {
         if (this.items.length === 0)
             throw Error("Empty Queue !!!");
         return this.items[0];
+    }
+
+    /**
+     * Returns true if the Priority Queue is empty
+     * @returns { boolean }
+     */
+    isEmpty() {
+        return this.items.length === 0;
     }
 
 }
 // -------------------------------------PRIORITY QUEUE ENDS---------------------
 
 // -----------------------------------------MAIN STARTS------------------------------
-let pq = new PriorityQueue();
-pq.enqueue(3);
-pq.enqueue(2);
-pq.enqueue(1);
+
+
+let pq = new PriorityQueue("max", (x) => x.id); // Max Priority Queue - Keeps the highest priority item at Front to get it picked.
+// let pq = new PriorityQueue("min", (x) => x.id); -- Min Priority Queue - Keeps the lowest priority item at Front to get it picked.
+console.log(pq.isEmpty());
+pq.enqueue({
+    id: 10,
+    name: "10"
+});
+pq.enqueue({
+    id: 10,
+    name: "100"
+});
+pq.enqueue({
+    id: 8,
+    name: "8"
+});
+pq.enqueue({
+    id: 9,
+    name: "9"
+});
 pq.dequeue();
-pq.dequeue();
-pq.print();
+// pq.dequeue();
+pq.print((x) => x.name);
 console.log("Front --> ", pq.getFront());
 console.log("Rear --> ", pq.getRear());
 
