@@ -43,10 +43,18 @@ class Stack {
     }
 
     /**
-     * Pretty prints the array based on a given predicate. defaults to (x) => x
+     * Pretty prints the array based on a given callback. defaults to (x) => x
      */
     print(callback = (x) => x) {
         console.log("[ " + this.arr.map(callback).join(", "), "]  <-- top");
+    }
+    /**
+     * 
+     * @param {Function} callback Function to use for mapping of every object in Stack. Last element is top.
+     * @returns 
+     */
+    getStack(callback = (x) => x) {
+        return this.arr.map(callback);
     }
 }
 // --------------------------------Stack Ends here --------------------------------------
@@ -73,5 +81,6 @@ s.push({
 s.pop()
 s.print(x => x.id); // => [ 4, 3, 2 ]  <-- top
 s.print(x => x.name); // => [ A, B, C ]  <-- top
+console.log(s.getStack((x) => x.id));
 
 // -------------------MAIN ENDS-----------------------
